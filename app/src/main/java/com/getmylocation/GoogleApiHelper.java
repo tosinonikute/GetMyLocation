@@ -37,7 +37,7 @@ import retrofit.client.Response;
 
 public class GoogleApiHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private static final String TAG = GoogleApiHelper.class.getSimpleName();
+    private final String TAG = this.getClass().getSimpleName();
 
     Context context;
     Activity activity;

@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private int interval = 7000; // interval set to 30 minutes
 
-    protected static final String TAG = "hello1: ";
+    private final String TAG = this.getClass().getSimpleName();
 
 
     @Override
