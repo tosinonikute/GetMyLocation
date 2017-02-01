@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Get My Location</string>
     <string name="title_activity_alarm">Alarm Activity</string>
-    <string name="title_activity_gms">Gms Activity</string>
-    <string name="key">AIzaSyDmpg3zZrmdVSgM9iVV5QsqiERmjmCcIDE</string>
+    <string name="title_activity_gms">GoogleApiClient Activity</string>
 </resources>

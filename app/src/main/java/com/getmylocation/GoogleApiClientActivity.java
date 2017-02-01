@@ -1,19 +1,3 @@
-/**
- * Copyright 2014 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.getmylocation;
 
 import android.Manifest;
@@ -29,8 +13,6 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.getmylocation.model.MapGoogleApis;
-import com.getmylocation.rest.MapsApi;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -46,28 +28,13 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
-/**
- * Location sample.
- *
- * Demonstrates use of the Location API to retrieve the last known location for a device.
- * This sample uses Google Play services (GoogleApiClient) but does not need to authenticate a user.
- * See https://github.com/googlesamples/android-google-accounts/tree/master/QuickStart if you are
- * also using APIs that need authentication.
- */
-public class GmsActivity extends AppCompatActivity implements
+public class GoogleApiClientActivity extends AppCompatActivity implements
         ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
 
     protected static final String TAG = "hello1: ";
 
-    /**
-     * Provides the entry point to Google Play services.
-     */
+    // Provides the entry point to Google Play services.
     protected GoogleApiClient mGoogleApiClient;
 
     private Location mLocation;
@@ -76,12 +43,6 @@ public class GmsActivity extends AppCompatActivity implements
 
     private Double latitude;
     private Double longitude;
-
-    /**
-     * Represents a geographical location.
-     */
-    //protected Location mLastLocation;
-
 
     protected String mLatitudeLabel;
     protected String mLongitudeLabel;
@@ -95,30 +56,14 @@ public class GmsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // turn GPS On.
 
-//        mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//
-//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        turnGPSOn();
-
-
-
-
-
-
-
-        //buildGoogleApiClient();
     }
 
 
 
-    /**
-     * Runs when a GoogleApiClient object successfully connects.
-     */
+
+    // Runs when a GoogleApiClient object successfully connects.
     @Override
     public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -140,9 +85,9 @@ public class GmsActivity extends AppCompatActivity implements
             latitude = mLocation.getLatitude();
             longitude = mLocation.getLongitude();
 
-            Log.d(TAG, String.valueOf(latitude));
-            Log.d(TAG, String.valueOf(longitude));
-            getLocation();
+//            Log.d(TAG, String.valueOf(latitude));
+//            Log.d(TAG, String.valueOf(longitude));
+//            getLocation();
 
         } else {
             Toast.makeText(this, "Location not Detected, Did you turn off your location?", Toast.LENGTH_SHORT).show();
@@ -203,12 +148,13 @@ public class GmsActivity extends AppCompatActivity implements
             mGoogleApiClient.disconnect();
         }
     }
+
     @Override
     public void onLocationChanged(Location location) {
 
     }
 
-    public void turnGPSOn(){
+    public void turnGPSOn(Context context){
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -218,7 +164,7 @@ public class GmsActivity extends AppCompatActivity implements
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
-        if(isGPSEnabled(getApplicationContext())){
+        if(isGPSEnabled()){
 
             Log.d(TAG, " GPS enabled");
 
@@ -261,7 +207,7 @@ public class GmsActivity extends AppCompatActivity implements
                                 // Show the dialog by calling
                                 // startResolutionForResult(),
                                 // and check the result in onActivityResult().
-                                status.startResolutionForResult(GmsActivity.this, 1000);
+                                status.startResolutionForResult(GoogleApiClientActivity.this, 1000);
 
                             } catch (IntentSender.SendIntentException e) {
                                 // Ignore the error.
@@ -271,55 +217,57 @@ public class GmsActivity extends AppCompatActivity implements
                             // Location settings are not satisfied. However, we have
                             // no way to fix the
                             // settings so we won't show the dialog.
-                            Toast.makeText(GmsActivity.this, "Location settings not turned On. Please turn it On manually", Toast.LENGTH_LONG).show();
+                            Toast.makeText(GoogleApiClientActivity.this, "Location settings not turned On. Please turn it On manually", Toast.LENGTH_LONG).show();
                             break;
                     }
                 }
             });
 
         }
-
-
     }
 
-    public boolean isGPSEnabled(Context mContext) {
+    public boolean isGPSEnabled() {
         LocationManager lm = (LocationManager)
-                mContext.getSystemService(Context.LOCATION_SERVICE);
+                getSystemService(Context.LOCATION_SERVICE);
         return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
 
     public void getLocation(){
 
+//        String latlng = String.format("%s,%f", latitude, longitude);
+//        System.out.println("hello1: " + latlng);
+//
+//        //https://console.developers.google.com/apis/credentials/key/1?project=getmylocation-1476088606540
+//        String key = getResources().getString(R.string.key);
+//
+//        RestAdapter restAdapter = new RestAdapter.Builder()
+//                .setLogLevel(RestAdapter.LogLevel.FULL)
+//                .setEndpoint(MapGoogleApis.getEndpoint()).build();
+//
+//        MapsApi mApi = restAdapter.create(MapsApi.class);
+//        mApi.getCurrentLocation(latlng, key, new Callback<MapGoogleApis>() {
+//            @Override
+//            public void success(MapGoogleApis info, Response response) {
+//                MapGoogleApis example = info;
+//                String address = example.getResults().get(0).getFormattedAddress().toString();
+//                Log.d(TAG, address);
+//
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                //Toast.makeText(GenreActivity.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                Log.d("RetrofitError: ", error.getLocalizedMessage());
+//
+//            }
+//        });
+
+    }
+
+    public String getLatLng(){
         String latlng = String.format("%s,%f", latitude, longitude);
-        System.out.println("hello1: " + latlng);
-
-        //https://console.developers.google.com/apis/credentials/key/1?project=getmylocation-1476088606540
-        String key = getResources().getString(R.string.key);
-
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint(MapGoogleApis.getEndpoint()).build();
-
-        MapsApi mApi = restAdapter.create(MapsApi.class);
-        mApi.getCurrentLocation(latlng, key, new Callback<MapGoogleApis>() {
-            @Override
-            public void success(MapGoogleApis info, Response response) {
-                MapGoogleApis example = info;
-                String address = example.getResults().get(0).getFormattedAddress().toString();
-                Log.d(TAG, address);
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                //Toast.makeText(GenreActivity.this, error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                Log.d("RetrofitError: ", error.getLocalizedMessage());
-
-            }
-        });
-
-
+        return latlng;
     }
 
 

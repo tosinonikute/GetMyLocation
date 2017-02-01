@@ -23,18 +23,11 @@
             </intent-filter>
         </activity>
 
-
-        <activity
-            android:name=".AlarmActivity"
-            android:label="@string/title_activity_alarm"></activity>
-
-        <activity
-            android:name=".GmsActivity"
-            android:label="@string/title_activity_gms"></activity>
+        <!--<activity-->
+            <!--android:name=".GoogleApiClientActivity"-->
+            <!--android:label="@string/title_activity_gms"></activity>-->
 
         <receiver android:name=".AlarmReceiver"></receiver>
-
-
 
     </application>
 

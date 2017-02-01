@@ -14,7 +14,6 @@ public class MapGoogleApis {
     private List<Result> results = new ArrayList<Result>();
     private String status;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    public static String endpoint = "https://maps.googleapis.com";
 
     /**
      *
@@ -50,10 +49,6 @@ public class MapGoogleApis {
      */
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public static String getEndpoint() {
-        return endpoint;
     }
 
     public Map<String, Object> getAdditionalProperties() {

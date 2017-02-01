@@ -12,9 +12,10 @@ import android.widget.Toast;
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(Context arg0, Intent arg1) {
-        // For our recurring task, we'll just display a message
-        Toast.makeText(arg0, "I'm running", Toast.LENGTH_SHORT).show();
+    public void onReceive(Context context, Intent intent) {
+        // For our recurring task, we'll send a broadcast
+        Toast.makeText(context, "Alarm receiver running", Toast.LENGTH_SHORT).show();
+        context.sendBroadcast(new Intent("USERS_LOCATION"));
 
     }
 
